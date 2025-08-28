@@ -1,1 +1,1 @@
-# strapi-dempó
+# strapi-dempo
