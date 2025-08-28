@@ -1,0 +1,32 @@
+version: '3.1'
+services:
+  mysql:
+    image: mysql:8.0
+    platform: linux/amd64
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: strapi
+      MYSQL_DATABASE: strapi
+      MYSQL_USER: strapi
+      MYSQL_PASSWORD: strapi
+    command: --max_allowed_packet=1073741824
+    volumes:
+      - strapi-mysql-data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+  strapi:
+    build:
+      context: ./strapi
+      dockerfile: Dockerfile
+    container_name: strapi
+    restart: unless-stopped
+    volumes:
+      - ./strapi:/srv/app
+      - /srv/app/node_modules
+    ports:
+      - "1337:1337"
+    depends_on:
+      - mysql
+volumes:
+  strapi-mysql-data:
